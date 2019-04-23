@@ -16,9 +16,26 @@ public:
 	StartInterface();
 	virtual ~StartInterface();
 
+public:
+
+	//开始动画
+	void AnimationAction();
+
 private:
-	//打印开场动画的蛇形
+	//打印开场动画出现的蛇形
     void PrintSnakeDeque();
+
+	//打印蛇形从左到右的移动
+	void PrintSnakeFromLeftToRight();
+
+	//打印蛇形从右移动到消失
+	void PrintSnakeDispear();
+
+	//清除SNAKE文字
+	void ClearTextSnake();
+
+	//更新SNAKE文字的位置
+	void UpdateTextSnake();
 
 private:
 	std::deque<Point> _StartSnake;	//开始动画中的蛇形点迹

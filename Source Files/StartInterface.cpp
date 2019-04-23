@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "StartInterface.h"
 
+#define STOPTIME 100
 
 StartInterface::StartInterface():
 	_Speed(25)
@@ -87,6 +88,70 @@ void StartInterface::PrintSnakeDeque()
 	for (auto & point : _StartSnake)
 	{
 		point.PointPrint();
-		Sleep(1000);
+		Sleep(STOPTIME);
 	}
+}
+
+void StartInterface::PrintSnakeFromLeftToRight()
+{
+	//蛇头需要从10移动到40
+	for (int i = 10; i < 40; i++)
+	{
+		//每一次的输出都是将头去掉，尾增加一个点
+		int j = (((i - 2) % 8) < 4) ? (15 + (i - 2) % 8) : (21 - (i - 2) % 8);	
+		_StartSnake.emplace_back(Point(i, j));
+		_StartSnake.back().PointPrint();
+		_StartSnake.front().PointClear();
+		_StartSnake.pop_front();	//去掉队列最前端的点
+		Sleep(STOPTIME);
+	}
+}
+
+void StartInterface::PrintSnakeDispear()
+{
+	while (!_StartSnake.empty() || _TextSnake.back().GetPointX() < 33) //当蛇形还没消失或文字没移动到指定位置
+	{
+		if(!_StartSnake.empty())
+		{
+			_StartSnake.front().PointClear();
+			_StartSnake.pop_front();
+		}
+
+		ClearTextSnake();
+
+		UpdateTextSnake();
+
+		Sleep(STOPTIME);
+	}
+		
+}
+
+void StartInterface::ClearTextSnake()
+{
+	for (auto& point : _TextSnake)
+	{
+		if (point.GetPointX() >= 0)
+		{
+			point.PointClear();
+		}
+		point.UpdatePos(point.GetPointX() + 1, point.GetPointY());	//向右平移一格
+	}
+}
+
+void StartInterface::UpdateTextSnake()
+{
+	for (auto& point : _TextSnake)
+	{
+		if (point.GetPointX() >= 0)
+		{
+			point.PointPrint();	//输出
+		}
+	}
+}
+
+void StartInterface::AnimationAction()
+{
+	PrintSnakeDeque();
+	PrintSnakeFromLeftToRight();
+	PrintSnakeDispear();
 }
