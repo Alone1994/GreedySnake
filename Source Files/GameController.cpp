@@ -1,13 +1,17 @@
 #include "pch.h"
 #include "GameController.h"
 
+#include <conio.h>
+#include <stdio.h>
 #include <iostream>
 #include <windows.h>
 
-GameController::GameController()
+GameController::GameController():
+	_Speed(100)
+	,_Key(1)
+	,_Score(0)
 {
 }
-
 
 GameController::~GameController()
 {
@@ -61,4 +65,56 @@ void GameController::SelectDifficulty()
 	Tools::Instance()->SetCurSorPositon(27, 28);
 	std::cout << "炼狱模式";
 	Tools::Instance()->SetCurSorPositon(0, 31);
+
+	_Score = 0;
+	int ch ;	//记录键入值
+	_Key = 1;	//记录选中项，初始选择第一个
+	bool flag = false;//记录是否键入Enter键标记，初始置为否
+	while (ch = _getch())
+	{
+		switch (ch)
+		{
+			case 72:
+				if (_Key > 1)//当此时选中项为第一项时，UP上方向键无效
+				{
+					switch (_Key)
+					{
+					case 2:
+						Tools::Instance()->SetCurSorPositon(27, 22);//给待选中项设置背景色
+						Tools::Instance()->SetCurBackgroundColor();
+						std::cout << "简单模式";
+
+						Tools::Instance()->SetCurSorPositon(27, 24);//将已选中项取消背景色
+						Tools::Instance()->SetColor(3);
+						std::cout << "普通模式";
+
+						--_Key;
+						break;
+					case 3:
+						Tools::Instance()->SetCurSorPositon(27, 24);
+						Tools::Instance()->SetCurBackgroundColor();
+						std::cout << "普通模式";
+
+						Tools::Instance()->SetCurSorPositon(27, 26);
+						Tools::Instance()->SetColor(3);
+						std::cout << "困难模式";
+
+						--_Key;
+						break;
+					case 4:
+						Tools::Instance()->SetCurSorPositon(27, 26);
+						Tools::Instance()->SetCurBackgroundColor();
+						std::cout << "困难模式";
+
+						Tools::Instance()->SetCurSorPositon(27, 28);
+						Tools::Instance()->SetColor(3);
+						std::cout << "炼狱模式";
+
+						--_Key;
+						break;
+					}
+				}
+				break;
+		}
+	}
 }

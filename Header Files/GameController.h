@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #pragma once
 #ifndef GameController_h__
 #define GameController_h__
@@ -24,6 +25,11 @@ public:
 	//选择游戏难度
 	void SelectDifficulty();
 
+private:
+
+	int _Speed;	//速度
+	int _Key;	//当前选择难度
+	int _Score;	//当前分数
 };
 
 #endif // GameController_h__
