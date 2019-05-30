@@ -74,47 +74,117 @@ void GameController::SelectDifficulty()
 	{
 		switch (ch)
 		{
-			case 72:
-				if (_Key > 1)//当此时选中项为第一项时，UP上方向键无效
+		case 72:
+			if (_Key > 1)//当此时选中项为第一项时，UP上方向键无效
+			{
+				switch (_Key)
 				{
-					switch (_Key)
-					{
-					case 2:
-						Tools::Instance()->SetCurSorPositon(27, 22);//给待选中项设置背景色
-						Tools::Instance()->SetCurBackgroundColor();
-						std::cout << "简单模式";
+				case 2:
+					Tools::Instance()->SetCurSorPositon(27, 22);//给待选中项设置背景色
+					Tools::Instance()->SetCurBackgroundColor();
+					std::cout << "简单模式";
 
-						Tools::Instance()->SetCurSorPositon(27, 24);//将已选中项取消背景色
-						Tools::Instance()->SetColor(3);
-						std::cout << "普通模式";
+					Tools::Instance()->SetCurSorPositon(27, 24);//将已选中项取消背景色
+					Tools::Instance()->SetColor(3);
+					std::cout << "普通模式";
 
-						--_Key;
-						break;
-					case 3:
-						Tools::Instance()->SetCurSorPositon(27, 24);
-						Tools::Instance()->SetCurBackgroundColor();
-						std::cout << "普通模式";
+					--_Key;
+					break;
+				case 3:
+					Tools::Instance()->SetCurSorPositon(27, 24);
+					Tools::Instance()->SetCurBackgroundColor();
+					std::cout << "普通模式";
 
-						Tools::Instance()->SetCurSorPositon(27, 26);
-						Tools::Instance()->SetColor(3);
-						std::cout << "困难模式";
+					Tools::Instance()->SetCurSorPositon(27, 26);
+					Tools::Instance()->SetColor(3);
+					std::cout << "困难模式";
 
-						--_Key;
-						break;
-					case 4:
-						Tools::Instance()->SetCurSorPositon(27, 26);
-						Tools::Instance()->SetCurBackgroundColor();
-						std::cout << "困难模式";
+					--_Key;
+					break;
+				case 4:
+					Tools::Instance()->SetCurSorPositon(27, 26);
+					Tools::Instance()->SetCurBackgroundColor();
+					std::cout << "困难模式";
 
-						Tools::Instance()->SetCurSorPositon(27, 28);
-						Tools::Instance()->SetColor(3);
-						std::cout << "炼狱模式";
+					Tools::Instance()->SetCurSorPositon(27, 28);
+					Tools::Instance()->SetColor(3);
+					std::cout << "炼狱模式";
 
-						--_Key;
-						break;
-					}
+					--_Key;
+					break;
 				}
-				break;
+			}
+			break;
+
+		case 80:
+			if (_Key < 4)
+			{
+				switch (_Key)
+				{
+				case 1:
+					Tools::Instance()->SetCurSorPositon(27, 24);
+					Tools::Instance()->SetCurBackgroundColor();
+					std::cout << "普通模式";
+					Tools::Instance()->SetCurSorPositon(27, 22);
+					Tools::Instance()->SetColor(3);
+					std::cout << "简单模式";
+
+					++_Key;
+					break;
+				case 2:
+					Tools::Instance()->SetCurSorPositon(27, 26);
+					Tools::Instance()->SetCurBackgroundColor();
+					std::cout << "困难模式";
+					Tools::Instance()->SetCurSorPositon(27, 24);
+					Tools::Instance()->SetColor(3);
+					std::cout << "普通模式";
+
+					++_Key;
+					break;
+				case 3:
+					Tools::Instance()->SetCurSorPositon(27, 28);
+					Tools::Instance()->SetCurBackgroundColor();
+					std::cout << "炼狱模式";
+					Tools::Instance()->SetCurSorPositon(27, 26);
+					Tools::Instance()->SetColor(3);
+					std::cout << "困难模式";
+
+					++_Key;
+					break;
+				}
+			}
+			break;
+
+		case 13:    //回车
+			flag = true;
+			break;
+		default:	//无效按键
+			break;
 		}
+
+		if (flag)
+		{
+			break;
+		}
+
+		Tools::Instance()->SetCurSorPositon(0, 31);    //设置光标到左下角
+	}
+
+	switch (_Key)//根据所选选项设置蛇的移动速度，speed值越大，速度越快
+	{
+	case 1:
+		_Speed = 135;
+		break;
+	case 2:
+		_Speed = 100;
+		break;
+	case 3:
+		_Speed = 60;
+		break;
+	case 4:
+		_Speed = 30;
+		break;
+	default:
+		break;
 	}
 }
