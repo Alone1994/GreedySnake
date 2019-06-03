@@ -45,3 +45,9 @@ void Point::UpdatePos(int x, int y)
 	_X = x;
 	_Y = y;
 }
+
+void Point::PrintCircle()
+{
+	Tools::Instance()->SetCurSorPositon(_X, _Y);
+	std::cout << "¡ñ";
+}

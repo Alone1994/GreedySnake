@@ -1,0 +1,35 @@
+#ifndef Food_h__
+#define Food_h__
+
+#include "Snake.h"
+
+class Snake;
+ 
+//食物
+class Food
+{
+public:
+	Food();
+	virtual ~Food();
+
+public:
+	//绘制食物
+	void DrawFood(Snake& snake);
+
+	//绘制限时食物
+	void DrawLimitFood(Snake& snake);
+
+private:
+	int _Cnt;
+	bool _FlashFlag;//闪烁标记
+	bool _BigFlag;//是否有限时食物标记
+	int _X, _Y;
+	int _BigX, _BigY;
+	int _ProgressBar;//限时食物进度条
+
+	friend class Snake;
+};
+
+#endif // Food_h__
+
+

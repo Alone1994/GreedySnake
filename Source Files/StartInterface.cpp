@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "StartInterface.h"
 
-#define STOPTIME 100
+#define STOPTIME 50
 
 StartInterface::StartInterface():
 	_Speed(25)

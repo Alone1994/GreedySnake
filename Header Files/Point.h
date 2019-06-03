@@ -28,6 +28,9 @@ public:
 	//更新X、Y坐标
 	void UpdatePos(int x, int y);
 
+	//输出圆点(蛇)
+	void PrintCircle();
+
 private:
 	int _X;	//点迹的X、Y坐标
 	int _Y;	
