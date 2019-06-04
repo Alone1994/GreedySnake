@@ -1,4 +1,5 @@
-#pragma once
+#ifndef Snake_h__
+#define Snake_h__
 
 #include "Point.h"
 #include "Food.h"
@@ -39,6 +40,12 @@ public:
 	//撞到自己
 	bool HitSelf();
 
+	//改变方向
+	bool ChangeDirection();
+
+	//吃到食物
+	bool GetFood(const Food& food);
+
 private:
 
 	std::deque<Point> _Snake;    //蛇形队列
@@ -48,3 +55,4 @@ private:
 	friend class Food;
 };
 
+#endif // Snake_h__

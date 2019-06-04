@@ -3,17 +3,6 @@
 
 #include <iostream>
 
-Point::Point()
-{
-}
-
-Point::Point(const int x, const int y)
-	:_X(x)
-	,_Y(y)
-{
-
-}	
-
 Point::~Point()
 {
 }

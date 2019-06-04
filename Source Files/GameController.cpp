@@ -278,5 +278,186 @@ int GameController::PlayGame()
 
 	//todo:游戏循环 2019.06.03 by zjz
 
+	while (snake->OverEdge() && snake->HitSelf())
+	{
+		if (!snake->ChangeDirection())
+		{
+			int temp = CreateMenu();
+			switch (temp)
+			{
+			case 1://继续游戏
+				break;
+
+			case 2://重新开始
+				delete snake;
+				delete food;
+				return 1;//将1作为PlayGame函数的返回值返回到Game函数中，表示重新开始
+
+			case 3://退出游戏
+				delete snake;
+				delete food;
+				return 2;//将2作为PlayGame函数的返回值返回到Game函数中，表示退出游戏
+
+			default:
+				break;
+			}
+		}
+
+		//如果吃到食物
+		if (snake->GetFood(*food))
+		{
+			snake->Move();
+			UpdateScore(1);
+			RedrawUIScore();
+			food->DrawFood(*snake);
+		}
+		else
+		{
+			snake->InitMove();
+		}
+
+		Sleep(_Speed);//制造蛇的移动效果
+
+		//加入限时食物
+	}
+
 	return 0;
+}
+
+int GameController::CreateMenu()
+{
+	/*绘制菜单*/
+	Tools::Instance()->SetColor(11);
+	Tools::Instance()->SetCurSorPositon(32, 19);
+	std::cout << "菜单：";
+	Sleep(100);
+	Tools::Instance()->SetCurSorPositon(34, 21);
+	Tools::Instance()->SetCurBackgroundColor();
+	std::cout << "继续游戏";
+	Sleep(100);
+	Tools::Instance()->SetCurSorPositon(34, 23);
+	Tools::Instance()->SetColor(11);
+	std::cout << "重新开始";
+	Sleep(100);
+	Tools::Instance()->SetCurSorPositon(34, 25);
+	std::cout << "退出游戏";
+	Tools::Instance()->SetCurSorPositon(0, 31);
+
+	/*选择部分*/
+	int ch;
+	int tmp_key = 1;
+	bool flag = false;
+	while (ch = _getch())
+	{
+		switch (ch)
+		{
+		case 72://UP
+			if (tmp_key > 1)
+			{
+				switch (tmp_key)
+				{
+				case 2:
+					Tools::Instance()->SetCurSorPositon(34, 21);
+					Tools::Instance()->SetCurBackgroundColor();
+					std::cout << "继续游戏";
+					Tools::Instance()->SetCurSorPositon(34, 23);
+					Tools::Instance()->SetColor(11);
+					std::cout << "重新开始";
+
+					--tmp_key;
+					break;
+				case 3:
+					Tools::Instance()->SetCurSorPositon(34, 23);
+					Tools::Instance()->SetCurBackgroundColor();
+					std::cout << "重新开始";
+					Tools::Instance()->SetCurSorPositon(34, 25);
+					Tools::Instance()->SetColor(11);
+					std::cout << "退出游戏";
+
+					--tmp_key;
+					break;
+				}
+			}
+			break;
+
+		case 80://DOWN
+			if (tmp_key < 3)
+			{
+				switch (tmp_key)
+				{
+				case 1:
+					Tools::Instance()->SetCurSorPositon(34, 23);
+					Tools::Instance()->SetCurBackgroundColor();
+					std::cout << "重新开始";
+					Tools::Instance()->SetCurSorPositon(34, 21);
+					Tools::Instance()->SetColor(11);
+					std::cout << "继续游戏";
+
+					++tmp_key;
+					break;
+				case 2:
+					Tools::Instance()->SetCurSorPositon(34, 25);
+					Tools::Instance()->SetCurBackgroundColor();
+					std::cout << "退出游戏";
+					Tools::Instance()->SetCurSorPositon(34, 23);
+					Tools::Instance()->SetColor(11);
+					std::cout << "重新开始";
+
+					++tmp_key;
+					break;
+				}
+			}
+			break;
+
+		case 13://Enter
+			flag = true;
+			break;
+
+		default:
+			break;
+		}
+
+		if (flag)
+		{
+			break;
+		}
+		Tools::Instance()->SetCurSorPositon(0, 31);
+	}
+
+	if (tmp_key == 1) //选择继续游戏，则将菜单擦除
+	{
+		Tools::Instance()->SetCurSorPositon(32, 19);
+		std::cout << "      ";
+		Tools::Instance()->SetCurSorPositon(34, 21);
+		std::cout << "        ";
+		Tools::Instance()->SetCurSorPositon(34, 23);
+		std::cout << "        ";
+		Tools::Instance()->SetCurSorPositon(34, 25);
+		std::cout << "        ";
+	}
+	return tmp_key;
+}
+
+void GameController::UpdateScore(const int& score)
+{
+	_Score += _Key * 10 * score;
+}
+
+void GameController::RedrawUIScore()
+{
+	Tools::Instance()->SetCurSorPositon(37, 8);
+	Tools::Instance()->SetColor(11);
+	int bit = 0;
+	int temp = _Score;
+	while (temp != 0)
+	{
+		bit++;
+		temp /= 10;
+	}
+
+	for (int i = 0; i < (6 - bit); i++)
+	{
+		std::cout << " ";
+	}
+	std::cout << _Score;
 }

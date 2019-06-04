@@ -8,8 +8,11 @@
 class Point
 {
 public:
-	Point();
-	Point(const int x, const int y);
+	Point() {}
+	Point(const int x, const int y)
+		:_X(x)
+		,_Y(y) 
+	{}
 	virtual ~Point();
 
 public:
@@ -30,6 +33,11 @@ public:
 
 	//输出圆点(蛇)
 	void PrintCircle();
+
+	bool operator == (const Point& point)
+	{
+		return (point._X == this->_X) && (point._Y == this->_Y);
+	}
 
 private:
 	int _X;	//点迹的X、Y坐标

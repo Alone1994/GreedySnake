@@ -25,6 +25,21 @@ public:
 	//选择游戏难度
 	void SelectDifficulty();
 
+	//绘制游戏界面
+	void DrawGame();
+
+	//开始游戏,其实也是一个循环,当游戏结束时，将值返回给temp
+	int PlayGame();
+
+	//创建菜单
+	int CreateMenu();
+
+	//更新分数：普通食物和限时食物的分数不同
+	void UpdateScore(const int& score);
+
+	//重绘界面分数
+	void RedrawUIScore();
+
 private:
 
 	int _Speed;	//速度
