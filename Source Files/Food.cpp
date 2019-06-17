@@ -103,3 +103,43 @@ void Food::DrawLimitFood(Snake& snake)
 		break;
 	}
 }
+
+bool Food::GetBigFlag()
+{
+	return _BigFlag;
+}
+
+void Food::FlashBigFood()
+{
+	Tools::Instance()->SetCurSorPositon(_BigX, _BigY);
+	Tools::Instance()->SetColor(18);
+	if (_FlashFlag)
+	{
+		std::cout << "  ";
+		_FlashFlag = false;
+	}
+	else
+	{
+		std::cout << "¡ö";
+		_FlashFlag = true;
+	}
+
+
+	Tools::Instance()->SetCurSorPositon(26, 0);
+	Tools::Instance()->SetColor(11);
+
+	for (int i = 42; i >= _ProgressBar; --i)
+	{
+		std::cout << "\b \b";
+	}
+
+	--_ProgressBar;
+	if (_ProgressBar == 0)
+	{
+		Tools::Instance()->SetCurSorPositon(_BigX, _BigY);
+		std::cout << "  ";
+		_BigFlag = false;
+		_BigX = 0;
+		_BigY = 0;
+	}
+}

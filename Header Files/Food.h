@@ -19,6 +19,12 @@ public:
 	//绘制限时食物
 	void DrawLimitFood(Snake& snake);
 
+	//获取限时食物标记
+	bool GetBigFlag();
+
+	//限时食物的闪烁功能
+	void FlashBigFood();
+
 private:
 	int _Cnt;
 	bool _FlashFlag;//闪烁标记

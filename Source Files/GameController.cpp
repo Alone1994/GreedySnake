@@ -316,12 +316,28 @@ int GameController::PlayGame()
 			snake->InitMove();
 		}
 
-		Sleep(_Speed);//制造蛇的移动效果
-
 		//加入限时食物
+		if (food->GetBigFlag())
+		{
+			food->FlashBigFood();
+		}
+
+		Sleep(_Speed);//制造蛇的移动效果
 	}
 
-	return 0;
+	delete snake;
+	delete food;
+
+	int temp = GameOver();
+	switch (temp)
+	{
+	case 1:
+		return 1;//重新开始
+	case 2:
+		return 2;//退出游戏
+	default:
+		return 2;
+	}
 }
 
 int GameController::CreateMenu()
@@ -460,4 +476,120 @@ void GameController::RedrawUIScore()
 		std::cout << " ";
 	}
 	std::cout << _Score;
+}
+
+int GameController::GameOver()
+{
+	/*绘制游戏结束界面*/
+	Sleep(500);
+	Tools::Instance()->SetColor(11);
+	Tools::Instance()->SetCurSorPositon(10, 8);
+	std::cout << "━━━━━━━━━━━━━━━━━━━━━━";
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(9, 9);
+	std::cout << " ┃               Game Over !!!              ┃";
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(9, 10);
+	std::cout << " ┃                                          ┃";
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(9, 11);
+	std::cout << " ┃              很遗憾！你挂了              ┃";
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(9, 12);
+	std::cout << " ┃                                          ┃";
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(9, 13);
+	std::cout << " ┃             你的分数为：                 ┃";
+	Tools::Instance()->SetCurSorPositon(24, 13);
+	std::cout << _Score;
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(9, 14);
+	std::cout << " ┃                                          ┃";
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(9, 15);
+	std::cout << " ┃   是否再来一局？                         ┃";
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(9, 16);
+	std::cout << " ┃                                          ┃";
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(9, 17);
+	std::cout << " ┃                                          ┃";
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(9, 18);
+	std::cout << " ┃    嗯，好的        不了，还是学习有意思  ┃";
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(9, 19);
+	std::cout << " ┃                                          ┃";
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(9, 20);
+	std::cout << " ┃                                          ┃";
+	Sleep(30);
+	Tools::Instance()->SetCurSorPositon(10, 21);
+	std::cout << "━━━━━━━━━━━━━━━━━━━━━━";
+
+	Sleep(100);
+	Tools::Instance()->SetCurSorPositon(12, 18);
+	Tools::Instance()->SetCurBackgroundColor();
+	std::cout << "嗯，好的";
+	Tools::Instance()->SetCurSorPositon(0, 31);
+
+	/*选择部分*/
+	int ch;
+	int tmp = 1;
+	bool flag = false;
+	while ((ch = _getch()))
+	{
+		switch (ch)
+		{
+		case 75://LEFT
+			if (tmp > 1)
+			{
+				Tools::Instance()->SetCurSorPositon(12, 18);
+				Tools::Instance()->SetCurBackgroundColor();
+				std::cout << "嗯，好的";
+				Tools::Instance()->SetCurSorPositon(20, 18);
+				Tools::Instance()->SetColor(11);
+				std::cout << "不了，还是学习有意思";
+				--tmp;
+			}
+			break;
+
+		case 77://RIGHT
+			if (tmp < 2)
+			{
+				Tools::Instance()->SetCurSorPositon(20, 18);
+				Tools::Instance()->SetCurBackgroundColor();
+				std::cout << "不了，还是学习有意思";
+				Tools::Instance()->SetCurSorPositon(12, 18);
+				Tools::Instance()->SetColor(11);
+				std::cout << "嗯，好的";
+				++tmp;
+			}
+			break;
+
+		case 13://Enter
+			flag = true;
+			break;
+
+		default:
+			break;
+		}
+
+		Tools::Instance()->SetCurSorPositon(0, 31);
+		if (flag) 
+		{
+			break;
+		}
+	}
+
+	Tools::Instance()->SetColor(11);
+	switch (tmp)
+	{
+	case 1:
+		return 1;//重新开始
+	case 2:
+		return 2;//退出游戏
+	default:
+		return 1;
+	}
 }

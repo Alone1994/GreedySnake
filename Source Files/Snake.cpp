@@ -70,7 +70,7 @@ bool Snake::HitSelf()
 	//如果整条蛇中与蛇头不相同的坐标不等于蛇长，则表示蛇头撞到自己
 	for (auto& point : _Snake)
 	{
-		if (point == *head)
+		if (!(point == *head))
 		{
 			cnt++;
 		}

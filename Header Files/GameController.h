@@ -40,6 +40,8 @@ public:
 	//重绘界面分数
 	void RedrawUIScore();
 
+	int GameOver();
+
 private:
 
 	int _Speed;	//速度
