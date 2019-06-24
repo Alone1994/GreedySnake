@@ -46,6 +46,9 @@ public:
 	//吃到食物
 	bool GetFood(const Food& food);
 
+	//获取限定食物
+	bool GetLimitFood(Food &food);
+
 private:
 
 	std::deque<Point> _Snake;    //蛇形队列

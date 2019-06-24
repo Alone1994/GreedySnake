@@ -40,12 +40,15 @@ public:
 	//重绘界面分数
 	void RedrawUIScore();
 
+	//重绘界面分数(吃到限时食物)
+	void RewriteScore();
+
 	int GameOver();
 
 private:
 
 	int _Speed;	//速度
-	int _Key;	//当前选择难度
+	int _CurDifference;	//当前选择难度
 	int _Score;	//当前分数
 };
 

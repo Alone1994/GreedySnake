@@ -42,6 +42,8 @@ public:
 		_InitMap.emplace_back(Point(28, 1));
 		_InitMap.emplace_back(Point(29, 1));
 		_InitMap.emplace_back(Point(30, 1));
+
+		//两侧同时显示的效果
 		_InitMap.emplace_back(Point(1, 2));
 		_InitMap.emplace_back(Point(30, 2));
 		_InitMap.emplace_back(Point(1, 3));

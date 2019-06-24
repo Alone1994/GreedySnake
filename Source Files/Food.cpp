@@ -22,7 +22,7 @@ Food::~Food()
 
 void Food::DrawFood(Snake& snake)
 {
-	//利用rand函数获得坐标，并将其范围限制在2-29内，即在地图内，如果获得的坐标与蛇身重叠，则重新获取。同时每5颗食物就出现一颗限时食物
+	//利用rand函数获得坐标，并将其范围限制在2-29，即在地图内，如果获得的坐标与蛇身重叠，则重新获取。同时每5颗食物就出现一颗限时食物
 	while (true)
 	{
 		int temp_x = rand() % 30;
@@ -54,7 +54,7 @@ void Food::DrawFood(Snake& snake)
 		_X = temp_x;
 		_Y = temp_y;
 		Tools::Instance()->SetCurSorPositon(_X, _Y);
-		Tools::Instance()->SetColor(3);
+		Tools::Instance()->SetColor(13);
 		std::cout << "★";
 		++_Cnt;
 		_Cnt %= 5;
@@ -142,4 +142,14 @@ void Food::FlashBigFood()
 		_BigX = 0;
 		_BigY = 0;
 	}
+}
+
+int Food::GetCnt()
+{
+	return _Cnt;
+}
+
+int Food::GetProgressBar()
+{
+	return _ProgressBar;
 }

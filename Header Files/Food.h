@@ -19,19 +19,24 @@ public:
 	//绘制限时食物
 	void DrawLimitFood(Snake& snake);
 
+	int GetCnt();
+
 	//获取限时食物标记
 	bool GetBigFlag();
 
 	//限时食物的闪烁功能
 	void FlashBigFood();
 
+	//获取进度条
+	int GetProgressBar();
+
 private:
 	int _Cnt;
-	bool _FlashFlag;//闪烁标记
-	bool _BigFlag;//是否有限时食物标记
+	bool _FlashFlag;    //闪烁标记
+	bool _BigFlag;    //是否有限时食物标记
 	int _X, _Y;
-	int _BigX, _BigY;
-	int _ProgressBar;//限时食物进度条
+	int _BigX, _BigY;    //限时食物的坐标
+	int _ProgressBar;    //限时食物进度条
 
 	friend class Snake;
 };

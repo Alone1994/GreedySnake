@@ -12,7 +12,7 @@
 
 GameController::GameController():
 	_Speed(100)
-	,_Key(1)
+	, _CurDifference(1)
 	,_Score(0)
 {
 }
@@ -26,7 +26,7 @@ void GameController::GameLoop()
 {
 	Start();
 
-	while (true)
+	while (true)    //此处开始循环
 	{
 		SelectDifficulty();
 
@@ -52,11 +52,11 @@ void GameController::GameLoop()
 
 void GameController::Start()
 {
-	Tools::Instance()->SetWindowSize(41, 32);
+	Tools::Instance()->SetWindowSize(41, 32);    //设置cmd框大小
 	Tools::Instance()->SetColor(2);
 
 	StartInterface* start = new StartInterface();
-	start->AnimationAction();	//播放动画
+	start->AnimationAction();	//播放动画:文字从左移动到右、蛇形从左移动到右
 	delete start;	//释放内存
 
 	//设置光标位置,输出提示语,等待任意键输入结束
@@ -77,7 +77,7 @@ void GameController::SelectDifficulty()
 	Tools::Instance()->SetCurSorPositon(6, 21);
 	std::cout << "请选择游戏难度：";
 	Tools::Instance()->SetCurSorPositon(6, 22);
-	std::cout << "(上下键选择,回车确认)";
+	std::cout << "(上下键选择游戏,回车确认)";
 	Tools::Instance()->SetCurSorPositon(27, 22);
 	Tools::Instance()->SetCurBackgroundColor();//第一个选项设置背景色以表示当前选中
 	std::cout << "简单模式";
@@ -88,20 +88,20 @@ void GameController::SelectDifficulty()
 	std::cout << "困难模式";
 	Tools::Instance()->SetCurSorPositon(27, 28);
 	std::cout << "炼狱模式";
-	Tools::Instance()->SetCurSorPositon(0, 31);
+	Tools::Instance()->SetCurSorPositon(0, 31);    //打印完难度将光标置于左下角，防止闪烁影响用户体验
 
 	_Score = 0;
-	int ch ;	//记录键入值
-	_Key = 1;	//记录选中项，初始选择第一个
+	int ch;	//记录键入值
+	_CurDifference = 1;	//当前选择难度，默认选择第一个
 	bool flag = false;//记录是否键入Enter键标记，初始置为否
 	while (ch = _getch())
 	{
 		switch (ch)
 		{
-			case 72:
-				if (_Key > 1)//当此时选中项为第一项时，UP上方向键无效
+			case 72:    //上
+				if (_CurDifference > 1)//当此时选中项为第一项时，UP上方向键无效
 				{
-					switch (_Key)
+					switch (_CurDifference)
 					{
 					case 2:
 						Tools::Instance()->SetCurSorPositon(27, 22);//给待选中项设置背景色
@@ -112,7 +112,7 @@ void GameController::SelectDifficulty()
 						Tools::Instance()->SetColor(3);
 						std::cout << "普通模式";
 
-						--_Key;
+						--_CurDifference;
 						break;
 					case 3:
 						Tools::Instance()->SetCurSorPositon(27, 24);
@@ -123,7 +123,7 @@ void GameController::SelectDifficulty()
 						Tools::Instance()->SetColor(3);
 						std::cout << "困难模式";
 
-						--_Key;
+						--_CurDifference;
 						break;
 					case 4:
 						Tools::Instance()->SetCurSorPositon(27, 26);
@@ -134,16 +134,16 @@ void GameController::SelectDifficulty()
 						Tools::Instance()->SetColor(3);
 						std::cout << "炼狱模式";
 
-						--_Key;
+						--_CurDifference;
 						break;
 					}
 				}
 				break;
 
-			case 80:
-				if(_Key < 4)
+			case 80:  //下
+				if(_CurDifference < 4)
 				{
-					switch (_Key)
+					switch (_CurDifference)
 					{
 						case 1:
 							Tools::Instance()->SetCurSorPositon(27, 24);
@@ -153,7 +153,7 @@ void GameController::SelectDifficulty()
 							Tools::Instance()->SetColor(3);
 							std::cout << "简单模式";
 
-							++_Key;
+							++_CurDifference;
 							break;
 						case 2:
 							Tools::Instance()->SetCurSorPositon(27, 26);
@@ -163,7 +163,7 @@ void GameController::SelectDifficulty()
 							Tools::Instance()->SetColor(3);
 							std::cout << "普通模式";
 
-							++_Key;
+							++_CurDifference;
 							break;
 						case 3:
 							Tools::Instance()->SetCurSorPositon(27, 28);
@@ -173,7 +173,7 @@ void GameController::SelectDifficulty()
 							Tools::Instance()->SetColor(3);
 							std::cout << "困难模式";
 
-							++_Key;
+							++_CurDifference;
 							break;
 					}
 				}
@@ -194,10 +194,10 @@ void GameController::SelectDifficulty()
 		Tools::Instance()->SetCurSorPositon(0, 31);    //设置光标到左下角
 	}
 
-	switch (_Key)//根据所选选项设置蛇的移动速度，speed值越大，速度越快
+	switch (_CurDifference)//根据所选选项设置蛇的移动速度，speed值越大，速度越慢
 	{
 	case 1:
-		_Speed = 135;
+		_Speed = 150;
 		break;
 	case 2:
 		_Speed = 100;
@@ -235,7 +235,7 @@ void GameController::DrawGame()
 	std::cout << "难度";
 
 	Tools::Instance()->SetCurSorPositon(36, 5);
-	switch (_Key)
+	switch (_CurDifference)
 	{
 	case 1:
 		std::cout << "简单模式";
@@ -259,9 +259,12 @@ void GameController::DrawGame()
 	std::cout << "     0";
 
 	Tools::Instance()->SetCurSorPositon(33, 13);
-	std::cout << " 方向键移动";
+	std::cout << " 提示：";
 
 	Tools::Instance()->SetCurSorPositon(33, 15);
+	std::cout << " 方向键移动";
+
+	Tools::Instance()->SetCurSorPositon(33, 17);
 	std::cout << " ESC键暂停";
 }
 
@@ -276,8 +279,6 @@ int GameController::PlayGame()
 	srand((unsigned)time(NULL));    //设置随机数,设置食物出生的位置
 	food->DrawFood(*snake);
 
-	//todo:游戏循环 2019.06.03 by zjz
-
 	while (snake->OverEdge() && snake->HitSelf())
 	{
 		if (!snake->ChangeDirection())
@@ -291,12 +292,12 @@ int GameController::PlayGame()
 			case 2://重新开始
 				delete snake;
 				delete food;
-				return 1;//将1作为PlayGame函数的返回值返回到Game函数中，表示重新开始
+				return 1;    //将1作为PlayGame函数的返回值返回到Game函数中，表示重新开始
 
 			case 3://退出游戏
 				delete snake;
 				delete food;
-				return 2;//将2作为PlayGame函数的返回值返回到Game函数中，表示退出游戏
+				return 2;    //将2作为PlayGame函数的返回值返回到Game函数中，表示退出游戏
 
 			default:
 				break;
@@ -317,6 +318,13 @@ int GameController::PlayGame()
 		}
 
 		//加入限时食物
+		if (snake->GetLimitFood(*food)) //吃到限时食物
+		{
+			snake->Move();
+			UpdateScore(food->GetProgressBar() / 5);//分数根据限时食物进度条确定
+			RewriteScore();
+		}
+
 		if (food->GetBigFlag())
 		{
 			food->FlashBigFood();
@@ -456,7 +464,7 @@ int GameController::CreateMenu()
 
 void GameController::UpdateScore(const int& score)
 {
-	_Score += _Key * 10 * score;
+	_Score += _CurDifference * 10 * score;
 }
 
 void GameController::RedrawUIScore()
@@ -472,6 +480,25 @@ void GameController::RedrawUIScore()
 	}
 
 	for (int i = 0; i < (6 - bit); i++)
+	{
+		std::cout << " ";
+	}
+	std::cout << _Score;
+}
+
+void GameController::RewriteScore()
+{
+	/*为保持分数尾部对齐，将最大分数设置为6位，计算当前分数位数，将剩余位数用空格补全，再输出分数*/
+	Tools::Instance()->SetCurSorPositon(37, 8);
+	Tools::Instance()->SetColor(11);
+	int bit = 0;
+	int tmp = _Score;
+	while (tmp != 0)
+	{
+		++bit;
+		tmp /= 10;
+	}
+	for (int i = 0; i < (6 - bit); ++i)
 	{
 		std::cout << " ";
 	}

@@ -6,6 +6,7 @@
 
 Snake::Snake()
 {
+	//设置蛇的长度及运动方向
 	_Snake.emplace_back(14, 8);
 	_Snake.emplace_back(15, 8);
 	_Snake.emplace_back(16, 8);
@@ -142,6 +143,23 @@ bool Snake::GetFood(const Food& food)
 		return true;
 	}
 	else 
+	{
+		return false;
+	}
+}
+
+bool Snake::GetLimitFood(Food &food)
+{
+	if (_Snake.back().GetPointX() == food._BigX && _Snake.back().GetPointY() == food._BigY)
+	{
+		food._BigFlag = false;
+		food._BigX = 0;
+		food._BigY = 0;
+		Tools::Instance()->SetCurSorPositon(1, 0);
+		std::cout << "                                                            ";
+		return true;
+	}
+	else
 	{
 		return false;
 	}
